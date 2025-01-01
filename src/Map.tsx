@@ -3,7 +3,6 @@ import L, { Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css'; // Import des styles
 
-// Typage des lieux
 interface Location {
     id: number;
     name: string;
@@ -21,7 +20,6 @@ const Map: React.FC = () => {
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
 
     useEffect(() => {
-        // Charger les données depuis le fichier JSON
         fetch('/locations.json')
             .then((response) => {
                 if (!response.ok) {
@@ -32,21 +30,19 @@ const Map: React.FC = () => {
             .then((data: Location[]) => setLocations(data))
             .catch((error) => console.error('Erreur :', error));
 
-        // Initialiser la carte
+        // Initialiser la carte sans les boutons de zoom
         if (!map) {
             map = L.map('map', {
                 crs: L.CRS.Simple,
                 minZoom: -2,
-                zoomControl: false,
+                zoomControl: false, // Désactive les boutons de zoom/unzoom
             }).setView([500, 500], 0);
 
-            // Ajouter l'image de la carte comme fond
-            const bounds: L.LatLngBoundsExpression = [[0, 0], [1000, 1000]]; // Dimensions de l'image
+            const bounds: L.LatLngBoundsExpression = [[0, 0], [1000, 1000]];
             L.imageOverlay('/map.png', bounds).addTo(map);
             map.fitBounds(bounds);
         }
 
-        // Nettoyage lors du démontage
         return () => {
             if (map) {
                 map.remove();
@@ -56,14 +52,11 @@ const Map: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        // Mettre à jour les marqueurs en fonction de l'époque actuelle
         if (map) {
-            // Supprimer l'ancien groupe de marqueurs
             if (markersLayer) {
                 map.removeLayer(markersLayer);
             }
 
-            // Créer un nouveau groupe de marqueurs
             const newMarkersLayer = L.layerGroup();
 
             locations
@@ -75,15 +68,38 @@ const Map: React.FC = () => {
                 });
 
             newMarkersLayer.addTo(map);
-            setMarkersLayer(newMarkersLayer); // Mettre à jour la couche actuelle
+            setMarkersLayer(newMarkersLayer);
         }
     }, [locations, currentEpoch]);
 
+    const handleEpochInputChange = (value: string) => {
+        const epoch = parseInt(value, 10);
+        if (!isNaN(epoch) && epoch >= 0 && epoch <= 5000) {
+            setCurrentEpoch(epoch);
+        }
+    };
+
     return (
         <div id="map-container">
-            {/* Boîte des paramètres */}
             <div className="controls">
-                <label htmlFor="epoch-selector">Époque actuelle : {currentEpoch}</label>
+                <label htmlFor="epoch-selector">
+                    Époque actuelle :{' '}
+                    <input
+                        id="epoch-input"
+                        type="number"
+                        min="0"
+                        max="5000"
+                        value={currentEpoch}
+                        onChange={(e) => handleEpochInputChange(e.target.value)}
+                        style={{
+                            width: '80px',
+                            padding: '5px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            textAlign: 'center',
+                        }}
+                    />
+                </label>
                 <input
                     id="epoch-selector"
                     type="range"
@@ -91,9 +107,9 @@ const Map: React.FC = () => {
                     max="5000"
                     value={currentEpoch}
                     onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
+                    style={{ marginTop: '10px', width: '100%' }}
                 />
             </div>
-            {/* Conteneur de la carte */}
             <div id="map"></div>
         </div>
     );
