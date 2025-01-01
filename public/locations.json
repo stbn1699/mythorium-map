@@ -1,5 +1,5 @@
 [
-  { "id": 1, "name": "Ville A", "x": 300, "y": 400, "epoch": "1000" },
-  { "id": 2, "name": "Village B", "x": 600, "y": 700, "epoch": "1500" },
-  { "id": 3, "name": "Forteresse C", "x": 800, "y": 200, "epoch": "2000" }
+  { "id": 1, "name": "Ville A", "x": 300, "y": 400, "epochStart": 1000, "epochEND": 1500},
+  { "id": 2, "name": "Village B", "x": 600, "y": 700, "epochStart": 1500, "epochEND": 2500},
+  { "id": 3, "name": "Forteresse C", "x": 800, "y": 200, "epochStart": 2000, "epochEND": 3000}
 ]
