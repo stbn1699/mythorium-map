@@ -19,6 +19,18 @@ const Map: React.FC = () => {
     const [currentEpoch, setCurrentEpoch] = useState<number>(0); // Époque actuelle
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
 
+    // Lecture des paramètres depuis l'URL au chargement
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const epochParam = params.get('epoch');
+        if (epochParam) {
+            const epoch = parseInt(epochParam, 10);
+            if (!isNaN(epoch) && epoch >= 0 && epoch <= 5000) {
+                setCurrentEpoch(epoch);
+            }
+        }
+    }, []); // Exécuté une seule fois au chargement de la page
+
     useEffect(() => {
         fetch('/locations.json')
             .then((response) => {
