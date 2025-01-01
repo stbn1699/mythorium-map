@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import L, { Map as LeafletMap } from 'leaflet';
+import React, {useEffect, useState} from 'react';
+import L, {Map as LeafletMap} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css'; // Import des styles
 
@@ -81,17 +81,40 @@ const Map: React.FC = () => {
                             animate: true,
                             duration: 0.5, // Animation fluide
                         });
+                        showLocationDetails(location);
                     });
 
                     marker
                         .addTo(newMarkersLayer)
-                        .bindPopup(`<b>${location.name}</b><br>Époque : ${location.epochStart} - ${location.epochEnd}`);
+                        .bindPopup(`<b>${location.name}</b>`);
                 });
 
             newMarkersLayer.addTo(map);
             setMarkersLayer(newMarkersLayer);
         }
     }, [locations, currentEpoch]);
+
+    const showLocationDetails = (location: Location) => {
+        const detailsContainer = document.getElementById('location-details');
+        if (detailsContainer) {
+            detailsContainer.innerHTML = `
+        <div class="controls infos">
+            <h3>${location.name}</h3>
+            <p>Époque : ${location.epochStart} - ${location.epochEnd}</p>
+        </div>
+    `;
+        }
+        map?.on('click', () => {
+            if (detailsContainer) {
+                detailsContainer.innerHTML = '';
+            }
+        });
+        map?.on('popupclose', () => {
+            if (detailsContainer) {
+                detailsContainer.innerHTML = '';
+            }
+        });
+    };
 
     const handleEpochInputChange = (value: string) => {
         const epoch = parseInt(value, 10);
@@ -102,7 +125,7 @@ const Map: React.FC = () => {
 
     return (
         <div id="map-container">
-            <div className="controls">
+            <div className="controls params">
                 <label htmlFor="epoch-selector">
                     Époque actuelle :{' '}
                     <input
@@ -128,10 +151,11 @@ const Map: React.FC = () => {
                     max="5000"
                     value={currentEpoch}
                     onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
-                    style={{ marginTop: '10px', width: '100%' }}
+                    style={{marginTop: '10px', width: '100%'}}
                 />
             </div>
             <div id="map"></div>
+            <div id="location-details" style={{right: '20px', left: 'auto'}}></div>
         </div>
     );
 };

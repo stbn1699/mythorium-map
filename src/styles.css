@@ -15,22 +15,33 @@ body, html {
 
 /* Boîte des contrôles */
 .controls {
-	left:             20px;
-	padding:          10px 15px;
-	position:         absolute;
-	top:              20px;
-	z-index:          1000; /* Toujours au-dessus de la carte */
 	background: rgba( 255, 255, 255, 0.25 );
 	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 	backdrop-filter: blur( 4px );
 	-webkit-backdrop-filter: blur( 4px );
 	border-radius: 10px;
 	border: 1px solid rgba( 255, 255, 255, 0.10 );
+	color:         #333;
+}
+
+.params{
+	left:             20px;
+	padding:          10px 15px;
+	position:         absolute;
+	top:              20px;
+	z-index:          1000; /* Toujours au-dessus de la carte */
+}
+
+.infos{
+	right:            20px;
+	padding:          10px 15px;
+	position:         absolute;
+	top:              20px;
+	z-index:          1000; /* Toujours au-dessus de la carte */
 }
 
 /* Style du sélecteur */
 .controls label {
-	color:         #333;
 	display:       block;
 	font-size:     14px;
 	font-weight:   bold;
