@@ -1,0 +1,14 @@
+/* Styles globaux */
+body, html {
+	background-color: #f4f4f4; /* Optionnel, une couleur de fond pour tout le site */
+	height:           100%;
+	margin:           0;
+	padding:          0;
+}
+
+/* La carte elle-même */
+#map {
+	background-image: url('/wood_texture.jpg'); /* Image du bois */
+	height:           100vh;
+	width:            100vw;
+}

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import L, { Map as LeafletMap } from 'leaflet';
+import React, {useEffect, useState} from 'react';
+import L, {Map as LeafletMap} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import './styles.css'; // Import des styles
 
 // Typage des lieux
 interface Location {
@@ -62,7 +63,9 @@ const Map: React.FC = () => {
         }
     }, [locations]);
 
-    return <div id="map" style={{ height: '100vh', width: '100%' }}></div>;
+    return (
+        <div id="map"></div>
+    );
 };
 
 export default Map;
