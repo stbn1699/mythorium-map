@@ -19,7 +19,6 @@ const Map: React.FC = () => {
     const [currentEpoch, setCurrentEpoch] = useState<number>(0); // Époque actuelle
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
 
-    // Lecture des paramètres depuis l'URL au chargement
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const epochParam = params.get('epoch');
@@ -46,7 +45,7 @@ const Map: React.FC = () => {
         if (!map) {
             map = L.map('map', {
                 crs: L.CRS.Simple,
-                minZoom: -2,
+                minZoom: -1,
                 zoomControl: false, // Désactive les boutons de zoom/unzoom
             }).setView([500, 500], 0);
 
@@ -74,7 +73,17 @@ const Map: React.FC = () => {
             locations
                 .filter((location) => currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd)
                 .forEach((location) => {
-                    L.marker([location.x, location.y])
+                    const marker = L.marker([location.x, location.y]);
+
+                    // Ajouter un événement de clic pour recentrer la carte
+                    marker.on('click', () => {
+                        map?.flyTo([location.x, location.y], 3, {
+                            animate: true,
+                            duration: 0.5, // Animation fluide
+                        });
+                    });
+
+                    marker
                         .addTo(newMarkersLayer)
                         .bindPopup(`<b>${location.name}</b><br>Époque : ${location.epochStart} - ${location.epochEnd}`);
                 });
