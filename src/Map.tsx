@@ -46,6 +46,7 @@ const Map: React.FC = () => {
             map = L.map('map', {
                 crs: L.CRS.Simple,
                 minZoom: -1,
+                maxZoom: 7,
                 zoomControl: false, // Désactive les boutons de zoom/unzoom
             }).setView([500, 500], 0);
 
