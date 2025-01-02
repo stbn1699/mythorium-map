@@ -4,7 +4,7 @@
 - [x] zoomer sur les infos quand on hover
 - [x] style de la petite popup
 - [x] pouvoir sélectionner un point via le lien
-- [ ] réglers bugs (plus possible de bouger l'époque, petite popup qui s'affiche pas)
+- [x] réglers bugs (plus possible de bouger l'époque, petite popup qui s'affiche pas)
 - [ ] vider le champ époque quand on clique dedans pour pouvoir taper a la main
 - [ ] style des marqueurs (définir les différentes catégories)
 - [ ] aouter les points existants du wiki

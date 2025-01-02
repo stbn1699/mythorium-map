@@ -18,6 +18,7 @@ const Map: React.FC = () => {
     const [locations, setLocations] = useState<Location[]>([]);
     const [currentEpoch, setCurrentEpoch] = useState<number>(0); // Époque actuelle
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
+    const [urlIdProcessed, setUrlIdProcessed] = useState<boolean>(false); // État pour suivre si l'ID de l'URL a été traité
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -96,16 +97,26 @@ const Map: React.FC = () => {
             // Vérifier si un ID de point est défini dans l'URL
             const params = new URLSearchParams(window.location.search);
             const locationIdParam = params.get('id');
-            if (locationIdParam) {
+            if (locationIdParam && !urlIdProcessed) {
                 const locationId = parseInt(locationIdParam, 10);
                 if (!isNaN(locationId)) {
                     const location = locations.find(loc => loc.id === locationId);
                     if (location) {
-                        setCurrentEpoch(location.epochStart);
+                        setCurrentEpoch(location.epochStart); // Mettre à jour l'état currentEpoch
+                        setUrlIdProcessed(true); // Marquer l'ID comme traité pour éviter de boucler et ne pas pouvoir modifier l'époque
                         map.flyTo([location.x, location.y], 3, {
                             animate: true,
                             duration: 0.5, // Animation fluide
                         });
+                        const existingMarker = newMarkersLayer.getLayers().find(layer => {
+                            if (layer instanceof L.Marker) {
+                                return layer.getLatLng().equals([location.x, location.y]);
+                            }
+                            return false;
+                        });
+                        if (existingMarker) {
+                            existingMarker.openPopup();
+                        }
                         showLocationDetails(location);
                     }
                 }
