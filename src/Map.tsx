@@ -92,6 +92,24 @@ const Map: React.FC = () => {
 
             newMarkersLayer.addTo(map);
             setMarkersLayer(newMarkersLayer);
+
+            // Vérifier si un ID de point est défini dans l'URL
+            const params = new URLSearchParams(window.location.search);
+            const locationIdParam = params.get('id');
+            if (locationIdParam) {
+                const locationId = parseInt(locationIdParam, 10);
+                if (!isNaN(locationId)) {
+                    const location = locations.find(loc => loc.id === locationId);
+                    if (location) {
+                        setCurrentEpoch(location.epochStart);
+                        map.flyTo([location.x, location.y], 3, {
+                            animate: true,
+                            duration: 0.5, // Animation fluide
+                        });
+                        showLocationDetails(location);
+                    }
+                }
+            }
         }
     }, [locations, currentEpoch]);
 
