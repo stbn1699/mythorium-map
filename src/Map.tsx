@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import L, {Map as LeafletMap} from 'leaflet';
+import {Icon} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css'; // Import des styles
 
@@ -10,7 +11,45 @@ interface Location {
     y: number;
     epochStart: number;
     epochEnd: number;
+    marker: string;
 }
+
+const crownIcon = new Icon({
+    iconUrl: '/icons/crown.png',
+    iconSize: [35, 35],
+    iconAnchor: [17, 17],
+    popupAnchor: [1, -5],
+    shadowSize: [25, 25]
+});
+
+const villageIcon = new Icon({
+    iconUrl: '/icons/village.png',
+    iconSize: [35, 35],
+    iconAnchor: [17, 17],
+    popupAnchor: [1, -5],
+    shadowSize: [25, 25]
+});
+
+const deityIcon = new Icon({
+    iconUrl: '/icons/deity.png',
+    iconSize: [35, 35],
+    iconAnchor: [17, 17],
+    popupAnchor: [1, -5],
+    shadowSize: [25, 25]
+});
+
+const getMarkerIcon = (marker: string) => {
+    switch (marker) {
+        case 'crown':
+            return crownIcon;
+        case 'village':
+            return villageIcon;
+        case 'deity':
+            return deityIcon;
+        default:
+            return crownIcon; // Default icon
+    }
+};
 
 let map: LeafletMap | null = null; // Variable pour stocker l'instance de la carte
 
@@ -75,13 +114,14 @@ const Map: React.FC = () => {
             locations
                 .filter((location) => currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd)
                 .forEach((location) => {
-                    const marker = L.marker([location.x, location.y]);
+                    const markerIcon = getMarkerIcon(location.marker);
+                    const marker = L.marker([location.x, location.y], { icon: markerIcon });
 
-                    // Ajouter un événement de clic pour recentrer la carte
+                    // Add click event to recenter the map
                     marker.on('click', () => {
                         map?.flyTo([location.x, location.y], 3, {
                             animate: true,
-                            duration: 0.5, // Animation fluide
+                            duration: 0.5, // Smooth animation
                         });
                         showLocationDetails(location);
                     });
