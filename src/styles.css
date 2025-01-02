@@ -80,4 +80,5 @@ body, html {
 }
 .leaflet-popup-content{
 	text-align: center;
+	font-size: 1rem;
 }

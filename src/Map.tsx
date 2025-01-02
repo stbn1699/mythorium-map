@@ -14,40 +14,58 @@ interface Location {
     marker: string;
 }
 
+const iconOptions = {
+    iconSize: [50, 50] as [number, number],
+    iconAnchor: [25, 50] as [number, number],
+    popupAnchor: [0, -50] as [number, number],
+    shadowSize: [25, 25] as [number, number]
+};
+
+const blankIcon = new Icon({
+    iconUrl: '/icons/blankPin.png',
+    ...iconOptions
+});
+
+const caliceIcon = new Icon({
+    iconUrl: '/icons/calice.png',
+    ...iconOptions
+});
+
+const castleIcon = new Icon({
+    iconUrl: '/icons/castle.png',
+    ...iconOptions
+});
+
+const communityIcon = new Icon({
+    iconUrl: '/icons/community.png',
+    ...iconOptions
+});
+
+
 const crownIcon = new Icon({
     iconUrl: '/icons/crown.png',
-    iconSize: [35, 35],
-    iconAnchor: [17, 17],
-    popupAnchor: [1, -5],
-    shadowSize: [25, 25]
+    ...iconOptions
 });
 
 const villageIcon = new Icon({
     iconUrl: '/icons/village.png',
-    iconSize: [35, 35],
-    iconAnchor: [17, 17],
-    popupAnchor: [1, -5],
-    shadowSize: [25, 25]
-});
-
-const deityIcon = new Icon({
-    iconUrl: '/icons/deity.png',
-    iconSize: [35, 35],
-    iconAnchor: [17, 17],
-    popupAnchor: [1, -5],
-    shadowSize: [25, 25]
+    ...iconOptions
 });
 
 const getMarkerIcon = (marker: string) => {
     switch (marker) {
+        case 'calice':
+            return caliceIcon;
+        case 'castle':
+            return castleIcon;
+        case 'community':
+            return communityIcon;
         case 'crown':
             return crownIcon;
         case 'village':
             return villageIcon;
-        case 'deity':
-            return deityIcon;
         default:
-            return crownIcon; // Default icon
+            return blankIcon; // Default icon
     }
 };
 
@@ -85,13 +103,13 @@ const Map: React.FC = () => {
         if (!map) {
             map = L.map('map', {
                 crs: L.CRS.Simple,
-                minZoom: -1,
-                maxZoom: 7,
+                minZoom: 0,
+                maxZoom: 5,
                 zoomControl: false, // Désactive les boutons de zoom/unzoom
             }).setView([500, 500], 0);
 
             const bounds: L.LatLngBoundsExpression = [[0, 0], [1000, 1000]];
-            L.imageOverlay('/map.png', bounds).addTo(map);
+            L.imageOverlay('worldMap/8192.png', bounds).addTo(map);
             map.fitBounds(bounds);
         }
 
@@ -119,7 +137,7 @@ const Map: React.FC = () => {
 
                     // Add click event to recenter the map
                     marker.on('click', () => {
-                        map?.flyTo([location.x, location.y], 3, {
+                        map?.flyTo([location.x, location.y], 4, {
                             animate: true,
                             duration: 0.5, // Smooth animation
                         });
