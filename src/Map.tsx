@@ -16,7 +16,7 @@ let map: LeafletMap | null = null; // Variable pour stocker l'instance de la car
 
 const Map: React.FC = () => {
     const [locations, setLocations] = useState<Location[]>([]);
-    const [currentEpoch, setCurrentEpoch] = useState<number>(0); // Époque actuelle
+    const [currentEpoch, setCurrentEpoch] = useState<number>(2500); // Époque actuelle (2500 par défaut)
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
     const [urlIdProcessed, setUrlIdProcessed] = useState<boolean>(false); // État pour suivre si l'ID de l'URL a été traité
 
@@ -163,8 +163,10 @@ const Map: React.FC = () => {
                         type="number"
                         min="0"
                         max="5000"
-                        value={currentEpoch}
+                        value={currentEpoch === 0 ? '' : currentEpoch}
                         onChange={(e) => handleEpochInputChange(e.target.value)}
+                        onFocus={(e) => e.target.value = ''}
+                        title={`Époque actuelle : ${currentEpoch}`}
                         style={{
                             width: '80px',
                             padding: '5px',
