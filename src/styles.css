@@ -14,14 +14,14 @@ body, html {
 }
 
 /* Boîte des contrôles */
-.controls {
+.controls, .leaflet-popup-content-wrapper {
 	background: rgba( 255, 255, 255, 0.25 );
 	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 	backdrop-filter: blur( 4px );
 	-webkit-backdrop-filter: blur( 4px );
 	border-radius: 10px;
 	border: 1px solid rgba( 255, 255, 255, 0.10 );
-	color:         #333;
+	color: #f1f1f1;
 }
 
 .params{
@@ -33,11 +33,29 @@ body, html {
 }
 
 .infos{
+    display: flex;
+    flex-direction: column;
+	width: 10vw;
+	height: 15vh;
 	right:            20px;
 	padding:          10px 15px;
 	position:         absolute;
 	top:              20px;
 	z-index:          1000; /* Toujours au-dessus de la carte */
+    transition-duration: 0.5s;
+}
+
+.infos h3, .infos p {
+    text-align: center;
+}
+
+.infos:hover{
+	font-size: 2rem;
+	width: 20vw;
+	height: 30vh;
+	background: rgba( 255, 255, 255, 0.65 );
+	transition-duration: 0.5s;
+	color: #3a3a3a;
 }
 
 /* Style du sélecteur */
@@ -51,4 +69,15 @@ body, html {
 .controls input[type="range"] {
 	cursor: pointer;
 	width:  200px;
+}
+
+/* Style de la petite popup */
+.leaflet-popup-close-button{
+	display: none;
+}
+.leaflet-popup-tip{
+	display: none;
+}
+.leaflet-popup-content{
+	text-align: center;
 }

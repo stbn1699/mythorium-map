@@ -1,6 +1,7 @@
 (normalement dans l'ordre de priorité)
 
-
+- mettre a jour le readme
+- zoomer sur les infos quand on clique (ajouter une croix en haut pour la fermer)
 - style de la popup
 - pouvoir sélectionner un point via le lien
 - style des marqueurs (définir les différentes catégories)
