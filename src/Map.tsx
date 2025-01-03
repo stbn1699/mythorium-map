@@ -41,7 +41,6 @@ const communityIcon = new Icon({
     ...iconOptions
 });
 
-
 const crownIcon = new Icon({
     iconUrl: '/icons/crown.png',
     ...iconOptions
@@ -75,18 +74,17 @@ const Map: React.FC = () => {
     const [locations, setLocations] = useState<Location[]>([]);
     const [currentEpoch, setCurrentEpoch] = useState<number>(2500); // Époque actuelle (2500 par défaut)
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
-    const [urlIdProcessed, setUrlIdProcessed] = useState<boolean>(false); // État pour suivre si l'ID de l'URL a été traité
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const epochParam = params.get('epoch');
-        if (epochParam) {
-            const epoch = parseInt(epochParam, 10);
-            if (!isNaN(epoch) && epoch >= 0 && epoch <= 5000) {
-                setCurrentEpoch(epoch);
-            }
-        }
-        calculateMarkers(true);
+        fetch('/locations.json')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors du chargement des données');
+                }
+                return response.json();
+            })
+            .then((data: Location[]) => setLocations(data))
+            .catch((error) => console.error('Erreur :', error));
     }, []); // Exécuté une seule fois au chargement de la page
 
     useEffect(() => {
@@ -104,90 +102,61 @@ const Map: React.FC = () => {
             map.fitBounds(bounds);
         }
 
-        return () => {
-            if (map) {
-                map.remove();
-                map = null;
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        calculateMarkers();
-    }, [locations, currentEpoch]);
-
-    const calculateMarkers = (doFetch?: boolean) => {
-        if (doFetch) {
-            fetch('/locations.json')
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Erreur lors du chargement des données');
-                    }
-                    return response.json();
-                })
-                .then((data: Location[]) => setLocations(data))
-                .catch((error) => console.error('Erreur :', error));
-        }
-
-        if (map) {
+        if (map && locations.length > 0) {
             if (markersLayer) {
                 map.removeLayer(markersLayer);
             }
 
             const newMarkersLayer = L.layerGroup();
 
-            locations
-                .filter((location) => currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd)
-                .forEach((location) => {
-                    const markerIcon = getMarkerIcon(location.marker);
-                    const marker = L.marker([location.x, location.y], { icon: markerIcon });
+            locations.forEach((location) => {
+                const markerIcon = getMarkerIcon(location.marker);
+                const marker = L.marker([location.x, location.y], { icon: markerIcon });
 
-                    // Add click event to recenter the map
-                    marker.on('click', () => {
-                        map?.flyTo([location.x, location.y], 4, {
-                            animate: true,
-                            duration: 0.5, // Smooth animation
-                        });
-                        showLocationDetails(location);
+                // Add click event to recenter the map
+                marker.on('click', () => {
+                    map?.flyTo([location.x, location.y], 4, {
+                        animate: true,
+                        duration: 0.5, // Smooth animation
                     });
-
-                    marker
-                        .addTo(newMarkersLayer)
-                        .bindPopup(`<b>${location.name}</b>`);
+                    showLocationDetails(location);
                 });
+
+                marker
+                    .addTo(newMarkersLayer)
+                    .bindPopup(`<b>${location.name}</b>`)
+                    .getElement()
+                    ?.classList.add(currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd ? 'display-block' : 'display-none');
+            });
 
             newMarkersLayer.addTo(map);
             setMarkersLayer(newMarkersLayer);
+        }
 
-            // Vérifier si un ID de point est défini dans l'URL
-            const params = new URLSearchParams(window.location.search);
-            const locationIdParam = params.get('id');
-            if (locationIdParam && !urlIdProcessed) {
-                const locationId = parseInt(locationIdParam, 10);
-                if (!isNaN(locationId)) {
-                    const location = locations.find(loc => loc.id === locationId);
+        return () => {
+            if (map) {
+                map.remove();
+                map = null;
+            }
+        };
+    }, [locations]);
+
+    useEffect(() => {
+        if (markersLayer) {
+            markersLayer.eachLayer((layer) => {
+                if (layer instanceof L.Marker) {
+                    const location = locations.find(loc => loc.x === layer.getLatLng().lat && loc.y === layer.getLatLng().lng);
                     if (location) {
-                        setCurrentEpoch(location.epochStart); // Mettre à jour l'état currentEpoch
-                        setUrlIdProcessed(true); // Marquer l'ID comme traité pour éviter de boucler et ne pas pouvoir modifier l'époque
-                        map.flyTo([location.x, location.y], 3, {
-                            animate: true,
-                            duration: 0.5, // Animation fluide
-                        });
-                        const existingMarker = newMarkersLayer.getLayers().find(layer => {
-                            if (layer instanceof L.Marker) {
-                                return layer.getLatLng().equals([location.x, location.y]);
-                            }
-                            return false;
-                        });
-                        if (existingMarker) {
-                            existingMarker.openPopup();
+                        const element = layer.getElement();
+                        if (element) {
+                            element.classList.toggle('display-block', currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd);
+                            element.classList.toggle('display-none', !(currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd));
                         }
-                        showLocationDetails(location);
                     }
                 }
-            }
+            });
         }
-    }
+    }, [currentEpoch, markersLayer, locations]);
 
     const showLocationDetails = (location: Location) => {
         const detailsContainer = document.getElementById('location-details');
@@ -250,7 +219,6 @@ const Map: React.FC = () => {
                     onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
                     style={{marginTop: '10px', width: '100%'}}
                 />
-                <button onClick={() => calculateMarkers(true)}>Rafraîchir les Marqueurs</button>
             </div>
             <div id="map"></div>
             <div id="location-details" style={{right: '20px', left: 'auto'}}></div>

@@ -9,7 +9,7 @@
 - [x] style des marqueurs (définir les différentes catégories)
 - [x] ajouter les vraies icônes de marqueurs avant l'ajout des vraies données
 - [x] aouter les points existants du wiki
-- [ ] bug lors de la sélection de l'époque, les points ne disparaissent pas correctement
+- [x] bug lors de la sélection de l'époque, les points ne disparaissent pas correctement
 - [ ] pouvoir activer ou désactiver le filtre par époque
 - [ ] faire un zoom avec des tuiles
 - [ ] ajouter des infos sur les points (description, lien vers le wiki, etc)

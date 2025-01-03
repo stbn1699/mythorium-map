@@ -8,5 +8,5 @@
   { "id": 7, "name": "Sylvandis", "x": 720, "y": 120, "epochStart": 0, "epochEnd": 5000, "marker": "castle" },
   { "id": 8, "name": "Thalis", "x": 645, "y": 900, "epochStart": 0, "epochEnd": 5000, "marker": "castle" },
   { "id": 9, "name": "Sanctuaire de Noctifer", "x": 195, "y": 495, "epochStart": 2756, "epochEnd": 5000, "marker": "calice" },
-  { "id": 10, "name": "Taverne OsMov", "x": 600, "y": 350, "epochStart": 4250, "epochEnd": 4321, "marker": "calice" }
+  { "id": 10, "name": "Taverne OsMov", "x": 601, "y": 350, "epochStart": 4250, "epochEnd": 4321, "marker": "calice" }
 ]
