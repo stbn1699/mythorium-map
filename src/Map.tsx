@@ -74,6 +74,7 @@ const Map: React.FC = () => {
     const [locations, setLocations] = useState<Location[]>([]);
     const [currentEpoch, setCurrentEpoch] = useState<number>(2500); // Époque actuelle (2500 par défaut)
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
+    const [isFilterEnabled, setIsFilterEnabled] = useState<boolean>(false); // État de la checkbox
 
     useEffect(() => {
         fetch('/locations.json')
@@ -126,7 +127,7 @@ const Map: React.FC = () => {
                     .addTo(newMarkersLayer)
                     .bindPopup(`<b>${location.name}</b>`)
                     .getElement()
-                    ?.classList.add(currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd ? 'display-block' : 'display-none');
+                    ?.classList.add(!isFilterEnabled || (currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd) ? 'display-block' : 'display-none');
             });
 
             newMarkersLayer.addTo(map);
@@ -149,14 +150,14 @@ const Map: React.FC = () => {
                     if (location) {
                         const element = layer.getElement();
                         if (element) {
-                            element.classList.toggle('display-block', currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd);
-                            element.classList.toggle('display-none', !(currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd));
+                            element.classList.toggle('display-block', !isFilterEnabled || (currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd));
+                            element.classList.toggle('display-none', isFilterEnabled && !(currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd));
                         }
                     }
                 }
             });
         }
-    }, [currentEpoch, markersLayer, locations]);
+    }, [currentEpoch, markersLayer, locations, isFilterEnabled]);
 
     const showLocationDetails = (location: Location) => {
         const detailsContainer = document.getElementById('location-details');
@@ -187,38 +188,36 @@ const Map: React.FC = () => {
         }
     };
 
+    const handleCheckboxChange = () => {
+        setIsFilterEnabled(!isFilterEnabled);
+    };
+
     return (
         <div id="map-container">
             <div className="controls params">
-                <label htmlFor="epoch-selector">
-                    Époque actuelle :{' '}
-                    <input
-                        id="epoch-input"
-                        type="number"
-                        min="0"
-                        max="5000"
-                        value={currentEpoch === 0 ? '' : currentEpoch}
-                        onChange={(e) => handleEpochInputChange(e.target.value)}
-                        onFocus={(e) => e.target.value = ''}
-                        title={`Époque actuelle : ${currentEpoch}`}
-                        style={{
-                            width: '80px',
-                            padding: '5px',
-                            border: '1px solid #ccc',
-                            borderRadius: '4px',
-                            textAlign: 'center',
-                        }}
-                    />
-                </label>
-                <input
-                    id="epoch-selector"
-                    type="range"
-                    min="0"
-                    max="5000"
-                    value={currentEpoch}
-                    onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
-                    style={{marginTop: '10px', width: '100%'}}
-                />
+                <div className="epoch-block">
+                    <label className="epoch-checkbox">
+                        Filtre par époque
+                        <input className="epoch-checkbox-checkbox" type="checkbox" checked={isFilterEnabled} onChange={handleCheckboxChange}/>
+                    </label>
+                    {isFilterEnabled && (
+                        <>
+                            <label htmlFor="epoch-selector" className="epoch-label">
+                                <div className="epoch-label-text">Époque actuelle :{' '}</div>
+                                <input id="epoch-input" type="number" min="0" max="5000" value={currentEpoch === 0 ? '' : currentEpoch}
+                                       onChange={(e) => handleEpochInputChange(e.target.value)}
+                                       onFocus={(e) => e.target.value = ''}
+                                       title={`Époque actuelle : ${currentEpoch}`}
+                                       className="epoch-input"
+                                />
+                            </label>
+                            <input id="epoch-selector" type="range" min="0" max="5000" value={currentEpoch}
+                                   onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
+                                   className="epoch-selector"
+                            />
+                        </>
+                    )}
+                </div>
             </div>
             <div id="map"></div>
             <div id="location-details" style={{right: '20px', left: 'auto'}}></div>

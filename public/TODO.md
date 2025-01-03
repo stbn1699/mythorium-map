@@ -10,7 +10,7 @@
 - [x] ajouter les vraies icônes de marqueurs avant l'ajout des vraies données
 - [x] aouter les points existants du wiki
 - [x] bug lors de la sélection de l'époque, les points ne disparaissent pas correctement
-- [ ] pouvoir activer ou désactiver le filtre par époque
+- [x] pouvoir activer ou désactiver le filtre par époque
 - [ ] faire un zoom avec des tuiles
 - [ ] ajouter des infos sur les points (description, lien vers le wiki, etc)
 - [ ] ajouter un lien vers le point sur la carte dans le wiki
@@ -18,4 +18,5 @@
 - [ ] gérer les zooms avec une carte plus résolutionnée
 - [ ] faire une légende
 - [ ] faire un filtre pour afficher qu'un seul type de point
+- [ ] responsive
 - [ ] ajouter de nouvelles cartes (par exemple une carte d'une ville ou d'un royaume, ouvrable via un autre composant avec sensiblement les mêmes paramètres mais genre les époques ça va de la création a la destruction)
