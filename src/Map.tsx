@@ -15,9 +15,9 @@ interface Location {
 }
 
 const iconOptions = {
-    iconSize: [50, 50] as [number, number],
-    iconAnchor: [25, 50] as [number, number],
-    popupAnchor: [0, -50] as [number, number],
+    iconSize: [70, 70] as [number, number],
+    iconAnchor: [35, 70] as [number, number],
+    popupAnchor: [0, -70] as [number, number],
     shadowSize: [25, 25] as [number, number]
 };
 
@@ -86,19 +86,10 @@ const Map: React.FC = () => {
                 setCurrentEpoch(epoch);
             }
         }
+        calculateMarkers(true);
     }, []); // Exécuté une seule fois au chargement de la page
 
     useEffect(() => {
-        fetch('/locations.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Erreur lors du chargement des données');
-                }
-                return response.json();
-            })
-            .then((data: Location[]) => setLocations(data))
-            .catch((error) => console.error('Erreur :', error));
-
         // Initialiser la carte sans les boutons de zoom
         if (!map) {
             map = L.map('map', {
@@ -122,6 +113,22 @@ const Map: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        calculateMarkers();
+    }, [locations, currentEpoch]);
+
+    const calculateMarkers = (doFetch?: boolean) => {
+        if (doFetch) {
+            fetch('/locations.json')
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Erreur lors du chargement des données');
+                    }
+                    return response.json();
+                })
+                .then((data: Location[]) => setLocations(data))
+                .catch((error) => console.error('Erreur :', error));
+        }
+
         if (map) {
             if (markersLayer) {
                 map.removeLayer(markersLayer);
@@ -180,7 +187,7 @@ const Map: React.FC = () => {
                 }
             }
         }
-    }, [locations, currentEpoch]);
+    }
 
     const showLocationDetails = (location: Location) => {
         const detailsContainer = document.getElementById('location-details');
@@ -243,6 +250,7 @@ const Map: React.FC = () => {
                     onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
                     style={{marginTop: '10px', width: '100%'}}
                 />
+                <button onClick={() => calculateMarkers(true)}>Rafraîchir les Marqueurs</button>
             </div>
             <div id="map"></div>
             <div id="location-details" style={{right: '20px', left: 'auto'}}></div>

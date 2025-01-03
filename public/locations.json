@@ -1,5 +1,12 @@
 [
-  { "id": 1, "name": "Kingdom A", "x": 300, "y": 400, "epochStart": 1000, "epochEnd": 1500, "marker": "crown" },
-  { "id": 2, "name": "Village B", "x": 600, "y": 700, "epochStart": 1500, "epochEnd": 2500, "marker": "village" },
-  { "id": 3, "name": "Church C", "x": 800, "y": 200, "epochStart": 2000, "epochEnd": 3000, "marker": "deity" }
+  { "id": 1, "name": "Secte Obscura", "x": 200, "y": 500, "epochStart": 2756, "epochEnd": 5000, "marker": "community" },
+  { "id": 2, "name": "Sentinelles de Thalmyr", "x": 580, "y": 800, "epochStart": 3265, "epochEnd": 5000, "marker": "community" },
+  { "id": 3, "name": "Kaldarhim", "x": 635, "y": 600, "epochStart": 1700, "epochEnd": 1852, "marker": "castle" },
+  { "id": 4, "name": "Lysandor", "x": 600, "y": 350, "epochStart": 1420, "epochEnd": 3572, "marker": "castle" },
+  { "id": 5, "name": "Lysendaris", "x": 750, "y": 325, "epochStart": 0, "epochEnd": 5000, "marker": "castle" },
+  { "id": 6, "name": "Nysseris", "x": 402, "y": 677, "epochStart": 0, "epochEnd": 3572, "marker": "castle" },
+  { "id": 7, "name": "Sylvandis", "x": 720, "y": 120, "epochStart": 0, "epochEnd": 5000, "marker": "castle" },
+  { "id": 8, "name": "Thalis", "x": 645, "y": 900, "epochStart": 0, "epochEnd": 5000, "marker": "castle" },
+  { "id": 9, "name": "Sanctuaire de Noctifer", "x": 195, "y": 495, "epochStart": 2756, "epochEnd": 5000, "marker": "calice" },
+  { "id": 10, "name": "Taverne OsMov", "x": 600, "y": 350, "epochStart": 4250, "epochEnd": 4321, "marker": "calice" }
 ]

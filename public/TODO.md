@@ -7,11 +7,12 @@
 - [x] réglers bugs (plus possible de bouger l'époque, petite popup qui s'affiche pas)
 - [x] vider le champ époque quand on clique dedans pour pouvoir taper a la main
 - [x] style des marqueurs (définir les différentes catégories)
+- [x] ajouter les vraies icônes de marqueurs avant l'ajout des vraies données
+- [x] aouter les points existants du wiki
+- [ ] bug lors de la sélection de l'époque, les points ne disparaissent pas correctement
 - [ ] pouvoir activer ou désactiver le filtre par époque
-- [ ] ajouter les vraies icônes de marqueurs avant l'ajout des vraies données
-- [ ] aouter les points existants du wiki
-- [ ] zoomer sur les infos quand on clique
-- [ ] ajouter un lien vers le wiki dans les infos
+- [ ] faire un zoom avec des tuiles
+- [ ] ajouter des infos sur les points (description, lien vers le wiki, etc)
 - [ ] ajouter un lien vers le point sur la carte dans le wiki
 - [ ] déployer sur le serveur
 - [ ] gérer les zooms avec une carte plus résolutionnée
