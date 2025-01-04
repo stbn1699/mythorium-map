@@ -12,6 +12,7 @@ interface Location {
     epochStart: number;
     epochEnd: number;
     marker: string;
+    link: string;
     description: string;
 }
 
@@ -76,6 +77,36 @@ const Map: React.FC = () => {
     const [currentEpoch, setCurrentEpoch] = useState<number>(2500); // Époque actuelle (2500 par défaut)
     const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
     const [isFilterEnabled, setIsFilterEnabled] = useState<boolean>(false); // État de la checkbox
+    const params = new URLSearchParams(window.location.search);
+    const epochParam = params.get('epoch');
+    const idParam = params.get('id');
+    const urlWiki = 'https://mythorium.ebasson.fr/';
+
+
+    useEffect(() => {
+        if (epochParam) {
+            const epoch = parseInt(epochParam, 10);
+            if (!isNaN(epoch)) {
+                setCurrentEpoch(epoch);
+                setIsFilterEnabled(true);
+            }
+        }
+
+
+        if (idParam) {
+            const id = parseInt(idParam, 10);
+            if (!isNaN(id)) {
+                const location = locations.find(loc => loc.id === id);
+                if (location) {
+                    map?.flyTo([location.x - 1000, location.y], 3, {
+                        animate: true,
+                        duration: 0.5,
+                    });
+                    showLocationDetails(location);
+                }
+            }
+        }
+    }, [locations]);
 
     useEffect(() => {
         fetch('/locations.json')
@@ -134,7 +165,7 @@ const Map: React.FC = () => {
 
             locations.forEach((location) => {
                 const markerIcon = getMarkerIcon(location.marker);
-                const marker = L.marker([location.x - 1000, location.y], { icon: markerIcon });
+                const marker = L.marker([location.x - 1000, location.y], {icon: markerIcon});
 
                 // Add click event to recenter the map
                 marker.on('click', () => {
@@ -173,12 +204,13 @@ const Map: React.FC = () => {
         if (markersLayer) {
             markersLayer.eachLayer((layer) => {
                 if (layer instanceof L.Marker) {
-                    const location = locations.find(loc => loc.x === layer.getLatLng().lat && loc.y === layer.getLatLng().lng);
+                    const location = locations.find(loc => loc.x - 1000 === layer.getLatLng().lat && loc.y === layer.getLatLng().lng);
                     if (location) {
                         const element = layer.getElement();
                         if (element) {
-                            element.classList.toggle('display-block', !isFilterEnabled || (currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd));
-                            element.classList.toggle('display-none', isFilterEnabled && !(currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd));
+                            const isVisible = !isFilterEnabled || (currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd);
+                            element.classList.toggle('display-block', isVisible);
+                            element.classList.toggle('display-none', !isVisible);
                         }
                     }
                 }
@@ -189,12 +221,15 @@ const Map: React.FC = () => {
     const showLocationDetails = (location: Location) => {
         const detailsContainer = document.getElementById('location-details');
         if (detailsContainer) {
+            const fullUrl = `${urlWiki}${location.link}`; // Construire l'URL complète
             detailsContainer.innerHTML = `
-        <div class="controls infos">
-            <h3>${location.name}</h3>
-            <p>Époque : ${location.epochStart} - ${location.epochEnd}</p>
-        </div>
-    `;
+                <div class="controls infos">
+                    <h1>${location.name}</h1>
+                    <p class="epoch"><i>Époque : ${location.epochStart} - ${location.epochEnd}</i></p>
+                    <p>${location.description}</p>
+                    <a href="${fullUrl}" target="_blank" class="btn-link">Lien vers le Wiki</a>
+                </div>
+            `;
         }
         map?.on('click', () => {
             if (detailsContainer) {
@@ -225,13 +260,15 @@ const Map: React.FC = () => {
                 <div className="epoch-block">
                     <label className="epoch-checkbox">
                         Filtre par époque
-                        <input className="epoch-checkbox-checkbox" type="checkbox" checked={isFilterEnabled} onChange={handleCheckboxChange}/>
+                        <input className="epoch-checkbox-checkbox" type="checkbox" checked={isFilterEnabled}
+                               onChange={handleCheckboxChange}/>
                     </label>
                     {isFilterEnabled && (
                         <>
                             <label htmlFor="epoch-selector" className="epoch-label">
                                 <div className="epoch-label-text">Époque actuelle :{' '}</div>
-                                <input id="epoch-input" type="number" min="0" max="5000" value={currentEpoch === 0 ? '' : currentEpoch}
+                                <input id="epoch-input" type="number" min="0" max="5000"
+                                       value={currentEpoch === 0 ? '' : currentEpoch}
                                        onChange={(e) => handleEpochInputChange(e.target.value)}
                                        onFocus={(e) => e.target.value = ''}
                                        title={`Époque actuelle : ${currentEpoch}`}

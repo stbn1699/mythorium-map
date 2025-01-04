@@ -8,78 +8,116 @@ body, html {
 
 /* La carte elle-même */
 #map {
-	background-image: url('/wood_texture.jpg'); /* Chemin absolu vers l'image */
-	background-size: cover; /* Assure que l'image couvre tout le conteneur */
+	background-image:    url('/wood_texture.jpg'); /* Chemin absolu vers l'image */
 	background-position: center; /* Centre l'image */
-	background-repeat: no-repeat; /* Empêche la répétition de l'image */
-	height: 100vh;
-	width: 100vw;
-	position: relative;
+	background-repeat:   no-repeat; /* Empêche la répétition de l'image */
+	background-size:     cover; /* Assure que l'image couvre tout le conteneur */
+	height:              100vh;
+	position:            relative;
+	width:               100vw;
+}
+
+#map-container::-webkit-scrollbar {
+	display: none; /* For Chrome, Safari, and Opera */
 }
 
 
 /* Boîte des contrôles */
 .controls, .leaflet-popup-content-wrapper {
-	background: rgba( 255, 255, 255, 0.25 );
-	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-	backdrop-filter: blur( 4px );
-	-webkit-backdrop-filter: blur( 4px );
-	border-radius: 10px;
-	border: 1px solid rgba( 255, 255, 255, 0.10 );
-	color: #f1f1f1;
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter:         blur(4px);
+	background:              rgba(255, 255, 255, 0.25);
+	border:                  1px solid rgba(255, 255, 255, 0.10);
+	border-radius:           10px;
+	box-shadow:              0 8px 32px 0 rgba(0, 0, 0, 0.37);
+	color:                   #f1f1f1;
+	z-index:                 1000;
 }
 
-.params{
-	left:             20px;
-	padding:          10px 15px;
-	position:         absolute;
-	top:              20px;
-	z-index:          1000; /* Toujours au-dessus de la carte */
+.params {
+	left:     20px;
+	padding:  10px 15px;
+	position: absolute;
+	top:      20px;
+	z-index:  1000; /* Toujours au-dessus de la carte */
 }
 
-.infos{
-    display: flex;
-    flex-direction: column;
-	width: 10vw;
-	height: 15vh;
-	right:            20px;
-	padding:          10px 15px;
-	position:         absolute;
-	top:              20px;
-	z-index:          1000; /* Toujours au-dessus de la carte */
-    transition-duration: 0.5s;
-}
-
-.infos h3, .infos p {
-    text-align: center;
-}
-
-.infos:hover{
-	font-size: 2rem;
-	width: 20vw;
-	height: 30vh;
-	background: rgba( 255, 255, 255, 0.65 );
+.infos {
+	display:             flex;
+	flex-direction:      column;
+	max-height:          95vh;
+	max-height:          90vh;
+	overflow:            auto;
+	-ms-overflow-style:  none; /* For Internet Explorer and Edge */
+	padding:             10px 15px;
+	position:            absolute;
+	right:               20px;
+	scrollbar-width:     none; /* For Firefox */
+	top:                 20px;
 	transition-duration: 0.5s;
-	color: #3a3a3a;
+	width:               20vw;
+	z-index:             1000; /* Toujours au-dessus de la carte */
+}
+
+.infos h1, .infos p {
+	margin:     0;
+	text-align: center;
+}
+
+.infos .epoch {
+	margin: 20px 0;
+}
+
+.infos:hover {
+	background:          rgba(255, 255, 255, 0.65);
+	color:               #3a3a3a;
+	transition-duration: 0.5s;
+}
+
+.infos a {
+	align-items:             center;
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter:         blur(4px);
+	background:              rgba(255, 255, 255, 0.25);
+	border:                  1px solid rgba(255, 255, 255, 0.10);
+	border-radius:           10px;
+	box-shadow:              0 8px 32px 0 rgba(0, 0, 0, 0.37);
+	color:                   #f1f1f1;
+	display:                 flex;
+	flex-direction:          column;
+	font-size:               1.3rem;
+	height:                  6vh;
+	justify-content:         center;
+	margin:                  20px auto;
+	transition-duration:     0.5s;
+	width:                   15rem;
+}
+
+.infos:hover a {
+	background:          rgba(255, 255, 255, 0.65);
+	color:               #3a3a3a;
+	transition-duration: 0.5s;
 }
 
 /* Style de la petite popup */
-.leaflet-popup-close-button{
+.leaflet-popup-close-button {
 	display: none;
 }
-.leaflet-popup-tip{
+
+.leaflet-popup-tip {
 	display: none;
 }
-.leaflet-popup-content{
+
+.leaflet-popup-content {
+	font-size:  1rem;
 	text-align: center;
-	font-size: 1rem;
 }
 
 /*afficher ou non les markers*/
-.epoch-block{
-	display: flex;
+.epoch-block {
+	display:        flex;
 	flex-direction: column;
-	gap: 10px;
+	gap:            10px;
 }
 
 .display-block {
@@ -91,39 +129,39 @@ body, html {
 }
 
 /* filter content */
-.epoch-checkbox{
-	display: flex;
+.epoch-checkbox {
+	display:        flex;
 	flex-direction: row;
-	gap : 10px;
-	font-size: 1.2rem;
+	font-size:      1.2rem;
+	gap:            10px;
 }
 
-.epoch-checkbox-checkbox{
+.epoch-checkbox-checkbox {
 	height: 20px;
-	width: 20px;
+	width:  20px;
 }
 
-.epoch-label{
-	display: flex;
+.epoch-label {
+	display:        flex;
 	flex-direction: row;
-	gap : 10px;
+	gap:            10px;
 }
 
-.epoch-label-text{
+.epoch-label-text {
 	font-size: 1.2rem;
 }
 
 .epoch-input {
-	width: 100px;
-	height: 20px;
-	padding: 5px;
-	border: 1px solid #ccc;
+	border:        1px solid #ccc;
 	border-radius: 4px;
-	text-align: center;
-	font-size: 1.2rem;
+	font-size:     1.2rem;
+	height:        20px;
+	padding:       5px;
+	text-align:    center;
+	width:         100px;
 }
 
 .epoch-selector {
 	margin-top: 10px;
-	width: 100%;
+	width:      100%;
 }
