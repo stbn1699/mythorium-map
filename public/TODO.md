@@ -12,11 +12,11 @@
 - [x] bug lors de la sélection de l'époque, les points ne disparaissent pas correctement
 - [x] pouvoir activer ou désactiver le filtre par époque
 - [x] faire un zoom avec des tuiles
-- [ ] ajouter des infos sur les points (description, lien vers le wiki, etc)
+- [x] ajouter des infos sur les points (description, lien vers le wiki, etc)
+- [x] déployer sur le serveur
 - [ ] ajouter un lien vers le point sur la carte dans le wiki
-- [ ] déployer sur le serveur
-- [ ] gérer les zooms avec une carte plus résolutionnée
 - [ ] faire une légende
 - [ ] faire un filtre pour afficher qu'un seul type de point
 - [ ] responsive
+- [ ] gérer les zooms avec une carte plus résolutionnée
 - [ ] ajouter de nouvelles cartes (par exemple une carte d'une ville ou d'un royaume, ouvrable via un autre composant avec sensiblement les mêmes paramètres mais genre les époques ça va de la création a la destruction)
