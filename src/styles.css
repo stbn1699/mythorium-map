@@ -8,10 +8,15 @@ body, html {
 
 /* La carte elle-même */
 #map {
-	background-image: url('/wood_texture.jpg'); /* Image du bois */
-	height:           100vh;
-	width:            100vw;
+	background-image: url('/wood_texture.jpg'); /* Chemin absolu vers l'image */
+	background-size: cover; /* Assure que l'image couvre tout le conteneur */
+	background-position: center; /* Centre l'image */
+	background-repeat: no-repeat; /* Empêche la répétition de l'image */
+	height: 100vh;
+	width: 100vw;
+	position: relative;
 }
+
 
 /* Boîte des contrôles */
 .controls, .leaflet-popup-content-wrapper {

@@ -11,7 +11,7 @@
 - [x] aouter les points existants du wiki
 - [x] bug lors de la sélection de l'époque, les points ne disparaissent pas correctement
 - [x] pouvoir activer ou désactiver le filtre par époque
-- [ ] faire un zoom avec des tuiles
+- [x] faire un zoom avec des tuiles
 - [ ] ajouter des infos sur les points (description, lien vers le wiki, etc)
 - [ ] ajouter un lien vers le point sur la carte dans le wiki
 - [ ] déployer sur le serveur

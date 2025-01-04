@@ -12,6 +12,7 @@ interface Location {
     epochStart: number;
     epochEnd: number;
     marker: string;
+    description: string;
 }
 
 const iconOptions = {
@@ -89,18 +90,39 @@ const Map: React.FC = () => {
     }, []); // Exécuté une seule fois au chargement de la page
 
     useEffect(() => {
-        // Initialiser la carte sans les boutons de zoom
+        // Initialize the map
         if (!map) {
+            console.log('Initializing the map...');
+
+            // Define bounds and center
+            const bounds: L.LatLngBoundsExpression = [[-4096, -4096], [4096, 4096]];
+            const center: L.LatLngExpression = [-500, 500];
+
             map = L.map('map', {
                 crs: L.CRS.Simple,
                 minZoom: 0,
-                maxZoom: 5,
-                zoomControl: false, // Désactive les boutons de zoom/unzoom
-            }).setView([500, 500], 0);
+                maxZoom: 3,
+                zoomControl: false, // Disable zoom buttons
+            });
 
-            const bounds: L.LatLngBoundsExpression = [[0, 0], [1000, 1000]];
-            L.imageOverlay('worldMap/8192.png', bounds).addTo(map);
-            map.fitBounds(bounds);
+            // Add tiles
+            L.tileLayer('/worldMap/tiles/{z}/{x}/{y}.png', {
+                tileSize: 128,
+                minZoom: 0,
+                maxZoom: 3,
+                noWrap: true,
+                bounds: bounds,
+            }).on('tileerror', (error) => {
+                console.error(`Error: Missing tile for z=${error.coords.z}, x=${error.coords.x}, y=${error.coords.y}`);
+            }).addTo(map);
+
+            // Restrict the view within the bounds
+            map.setMaxBounds(L.latLngBounds(bounds));
+
+            // Center the map
+            map.setView(center, 0); // Set the initial view to the center
+
+            console.log('Map initialized.');
         }
 
         if (map && locations.length > 0) {
@@ -112,11 +134,11 @@ const Map: React.FC = () => {
 
             locations.forEach((location) => {
                 const markerIcon = getMarkerIcon(location.marker);
-                const marker = L.marker([location.x, location.y], { icon: markerIcon });
+                const marker = L.marker([location.x - 1000, location.y], { icon: markerIcon });
 
                 // Add click event to recenter the map
                 marker.on('click', () => {
-                    map?.flyTo([location.x, location.y], 4, {
+                    map?.flyTo([location.x - 1000, location.y], 3, {
                         animate: true,
                         duration: 0.5, // Smooth animation
                     });
@@ -127,7 +149,12 @@ const Map: React.FC = () => {
                     .addTo(newMarkersLayer)
                     .bindPopup(`<b>${location.name}</b>`)
                     .getElement()
-                    ?.classList.add(!isFilterEnabled || (currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd) ? 'display-block' : 'display-none');
+                    ?.classList.add(
+                    !isFilterEnabled ||
+                    (currentEpoch >= location.epochStart && currentEpoch <= location.epochEnd)
+                        ? 'display-block'
+                        : 'display-none'
+                );
             });
 
             newMarkersLayer.addTo(map);
