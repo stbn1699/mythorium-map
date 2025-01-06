@@ -143,8 +143,6 @@ const Map: React.FC = () => {
                 maxZoom: 3,
                 noWrap: true,
                 bounds: bounds,
-            }).on('tileerror', (error) => {
-                console.error(`Error: Missing tile for z=${error.coords.z}, x=${error.coords.x}, y=${error.coords.y}`);
             }).addTo(map);
 
             // Restrict the view within the bounds
@@ -165,11 +163,11 @@ const Map: React.FC = () => {
 
             locations.forEach((location) => {
                 const markerIcon = getMarkerIcon(location.marker);
-                const marker = L.marker([location.x - 1000, location.y], {icon: markerIcon});
+                const marker = L.marker([location.x, location.y], {icon: markerIcon});
 
                 // Add click event to recenter the map
                 marker.on('click', () => {
-                    map?.flyTo([location.x - 1000, location.y], 3, {
+                    map?.flyTo([location.x, location.y], 3, {
                         animate: true,
                         duration: 0.5, // Smooth animation
                     });
