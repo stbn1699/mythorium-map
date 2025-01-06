@@ -14,6 +14,7 @@
 - [x] faire un zoom avec des tuiles
 - [x] ajouter des infos sur les points (description, lien vers le wiki, etc)
 - [x] déployer sur le serveur
+- [x] résoudre le soucis des points mal placés
 - [ ] ajouter un lien vers le point sur la carte dans le wiki
 - [ ] faire une légende
 - [ ] faire un filtre pour afficher qu'un seul type de point
