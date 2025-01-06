@@ -34,28 +34,19 @@ body, html {
 	z-index:                 1000;
 }
 
-.params {
-	left:     20px;
-	padding:  10px 15px;
-	position: absolute;
-	top:      20px;
-	z-index:  1000; /* Toujours au-dessus de la carte */
-}
-
 .infos {
 	display:             flex;
 	flex-direction:      column;
-	max-height:          95vh;
 	max-height:          90vh;
 	overflow:            auto;
 	-ms-overflow-style:  none; /* For Internet Explorer and Edge */
 	padding:             10px 15px;
 	position:            absolute;
-	right:               20px;
+	top: 1rem;
+	right: 1rem;
 	scrollbar-width:     none; /* For Firefox */
-	top:                 20px;
 	transition-duration: 0.5s;
-	width:               20vw;
+	width:               30rem;
 	z-index:             1000; /* Toujours au-dessus de la carte */
 }
 
@@ -99,6 +90,27 @@ body, html {
 	transition-duration: 0.5s;
 }
 
+.close-button{
+	display: none;
+}
+
+@media screen and (max-width: 864px) {
+	.infos, .infos a{
+		background:          rgba(255, 255, 255, 0.65);
+		color:               #3a3a3a !important;
+		transition-duration: 0.5s;
+	}
+
+	.infos{
+		width: 80vw;
+		left: 10vw;
+	}
+
+	.close-button{
+		display: block;
+	}
+}
+
 /* Style de la petite popup */
 .leaflet-popup-close-button {
 	display: none;
@@ -114,12 +126,6 @@ body, html {
 }
 
 /*afficher ou non les markers*/
-.epoch-block {
-	display:        flex;
-	flex-direction: column;
-	gap:            10px;
-}
-
 .display-block {
 	display: block;
 }
@@ -128,7 +134,27 @@ body, html {
 	display: none;
 }
 
+/*paramètres*/
+.params {
+	padding:  10px 15px;
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	z-index:  1000; /* Toujours au-dessus de la carte */
+}
+
+@media screen and (max-width: 600px) {
+	.params {
+	}
+}
+
 /* filter content */
+.epoch-block {
+	display:        flex;
+	flex-direction: column;
+	gap:            10px;
+}
+
 .epoch-checkbox {
 	display:        flex;
 	flex-direction: row;
