@@ -202,7 +202,7 @@ const Map: React.FC = () => {
         if (markersLayer) {
             markersLayer.eachLayer((layer) => {
                 if (layer instanceof L.Marker) {
-                    const location = locations.find(loc => loc.x - 1000 === layer.getLatLng().lat && loc.y === layer.getLatLng().lng);
+                    const location = locations.find(loc => loc.x === layer.getLatLng().lat && loc.y === layer.getLatLng().lng);
                     if (location) {
                         const element = layer.getElement();
                         if (element) {
