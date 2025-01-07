@@ -235,15 +235,25 @@ const Map: React.FC = () => {
 		setIsFilterEnabled(!isFilterEnabled);
 	};
 
-	return (<div id="map-container">
+	return (
+		<div id="map-container">
 			<div className="controls params">
-				<div className="epoch-block">
-					<label className="epoch-checkbox">
-						Filtre par époque
-						<input className="epoch-checkbox-checkbox" type="checkbox" checked={isFilterEnabled}
-							   onChange={handleCheckboxChange}/>
-					</label>
-					{isFilterEnabled && (<>
+				<div className="params-collapse-block" onClick={() => {
+					const element = document.querySelector('.params-params-block');
+					if (element) {
+						element.classList.toggle('display-none');
+					}
+				}}>
+					<span className="params-collapse-text">Paramètres</span>
+				</div>
+				<div className="params-params-block">
+					<div className="epoch-block">
+						<label className="epoch-checkbox">
+							Filtre par époque
+							<input className="epoch-checkbox-checkbox" type="checkbox" checked={isFilterEnabled}
+								   onChange={handleCheckboxChange}/>
+						</label>
+						{isFilterEnabled && (<>
 							<label htmlFor="epoch-selector" className="epoch-label">
 								<div className="epoch-label-text">Époque actuelle :{' '}</div>
 								<input id="epoch-input" type="number" min="0" max="5000"
@@ -259,11 +269,13 @@ const Map: React.FC = () => {
 								   className="epoch-selector"
 							/>
 						</>)}
+					</div>
 				</div>
 			</div>
 			<div id="map"></div>
 			<div id="location-details" style={{right: '20px', left: 'auto'}}></div>
-		</div>);
+		</div>
+	);
 };
 
 export default Map;

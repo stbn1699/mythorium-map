@@ -152,6 +152,7 @@ body, html {
 
 @media screen and (max-width: 600px) {
 	.params {
+		width: 90vw;
 	}
 }
 
@@ -165,13 +166,17 @@ body, html {
 .epoch-checkbox {
 	display:        flex;
 	flex-direction: row;
+	align-items:    center;
 	font-size:      1.2rem;
 	gap:            10px;
 }
 
 .epoch-checkbox-checkbox {
 	height: 20px;
+	align-items:    center;
 	width:  20px;
+	/*TODO refaire un allignement propre*/
+	margin-top: 6px;
 }
 
 .epoch-label {
@@ -197,4 +202,21 @@ body, html {
 .epoch-selector {
 	margin-top: 10px;
 	width:      100%;
+}
+
+.params-collapse-block {
+	display: none;
+	margin: 5px auto;
+}
+
+.params-collapse-text {
+	font-size: 1.2rem;
+	text-align: center;
+	width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+	.params-collapse-block {
+		display: flex;
+	}
 }
