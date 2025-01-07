@@ -101,13 +101,20 @@ body, html {
 		transition-duration: 0.5s;
 	}
 
-	.infos{
+	.infos {
 		width: 80vw;
-		left: 10vw;
+		max-height: 80vh;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	.close-button{
+		position: absolute;
+		right: 1rem;
+		top: -1rem;
 		display: block;
+		font-size: 3rem;
 	}
 }
 
