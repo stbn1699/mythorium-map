@@ -115,7 +115,12 @@ const Map: React.FC<MapProps> = ({ mapName, maxZoom, minEpoch, maxEpoch }) => {
 				}
 				return response.json();
 			})
-			.then((data: Location[]) => setLocations(data))
+			.then((data: { name: string, locations: Location[] }[]) => {
+				const mapData = data.find(map => map.name === mapName);
+				if (mapData) {
+					setLocations(mapData.locations);
+				}
+			})
 			.catch((error) => console.error('Erreur :', error));
 	}, []); // Exécuté une seule fois au chargement de la page
 

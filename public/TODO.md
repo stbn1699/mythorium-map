@@ -20,3 +20,10 @@
 - [ ] faire un filtre pour afficher qu'un seul type de point
 - [ ] gérer les zooms avec une carte plus résolutionnée
 - [ ] ajouter de nouvelles cartes (par exemple une carte d'une ville ou d'un royaume, ouvrable via un autre composant avec sensiblement les mêmes paramètres mais genre les époques ça va de la création a la destruction) (faudrait donc avoir une autre carte en tiles, et rendre presque tout dans Map.tsx en dépendant de coment on l'appelle, entre la carte a afficher, niveau de zoom maximal, époques, quels points afficher (donc on aurai un fichier par carte, ou alors un objet par carte dans un fichier de config))
+
+
+## Kaldarhim
+- [~] Ajouter les points existants
+- [ ] trouver le nom de la collocation de Sefare
+- [ ] faire les pages de wiki des lieux
+- [ ] trouver des icônes 
