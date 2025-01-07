@@ -15,9 +15,8 @@
 - [x] ajouter des infos sur les points (description, lien vers le wiki, etc)
 - [x] déployer sur le serveur
 - [x] résoudre le soucis des points mal placés
-- [ ] ajouter un lien vers le point sur la carte dans le wiki
+- [x] responsive
 - [ ] faire une légende
 - [ ] faire un filtre pour afficher qu'un seul type de point
-- [ ] responsive
 - [ ] gérer les zooms avec une carte plus résolutionnée
-- [ ] ajouter de nouvelles cartes (par exemple une carte d'une ville ou d'un royaume, ouvrable via un autre composant avec sensiblement les mêmes paramètres mais genre les époques ça va de la création a la destruction)
+- [ ] ajouter de nouvelles cartes (par exemple une carte d'une ville ou d'un royaume, ouvrable via un autre composant avec sensiblement les mêmes paramètres mais genre les époques ça va de la création a la destruction) (faudrait donc avoir une autre carte en tiles, et rendre presque tout dans Map.tsx en dépendant de coment on l'appelle, entre la carte a afficher, niveau de zoom maximal, époques, quels points afficher (donc on aurai un fichier par carte, ou alors un objet par carte dans un fichier de config))

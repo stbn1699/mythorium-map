@@ -34,28 +34,19 @@ body, html {
 	z-index:                 1000;
 }
 
-.params {
-	left:     20px;
-	padding:  10px 15px;
-	position: absolute;
-	top:      20px;
-	z-index:  1000; /* Toujours au-dessus de la carte */
-}
-
 .infos {
 	display:             flex;
 	flex-direction:      column;
-	max-height:          95vh;
 	max-height:          90vh;
 	overflow:            auto;
 	-ms-overflow-style:  none; /* For Internet Explorer and Edge */
 	padding:             10px 15px;
 	position:            absolute;
-	right:               20px;
+	top: 1rem;
+	right: 1rem;
 	scrollbar-width:     none; /* For Firefox */
-	top:                 20px;
 	transition-duration: 0.5s;
-	width:               20vw;
+	width:               30rem;
 	z-index:             1000; /* Toujours au-dessus de la carte */
 }
 
@@ -99,6 +90,34 @@ body, html {
 	transition-duration: 0.5s;
 }
 
+.close-button{
+	display: none;
+}
+
+@media screen and (max-width: 864px) {
+	.infos, .infos a{
+		background:          rgba(255, 255, 255, 0.65);
+		color:               #3a3a3a !important;
+		transition-duration: 0.5s;
+	}
+
+	.infos {
+		width: 80vw;
+		max-height: 80vh;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.close-button{
+		position: absolute;
+		right: 1rem;
+		top: -1rem;
+		display: block;
+		font-size: 3rem;
+	}
+}
+
 /* Style de la petite popup */
 .leaflet-popup-close-button {
 	display: none;
@@ -114,12 +133,6 @@ body, html {
 }
 
 /*afficher ou non les markers*/
-.epoch-block {
-	display:        flex;
-	flex-direction: column;
-	gap:            10px;
-}
-
 .display-block {
 	display: block;
 }
@@ -128,17 +141,42 @@ body, html {
 	display: none;
 }
 
+/*paramètres*/
+.params {
+	padding:  10px 15px;
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	z-index:  1000; /* Toujours au-dessus de la carte */
+}
+
+@media screen and (max-width: 600px) {
+	.params {
+		width: 90vw;
+	}
+}
+
 /* filter content */
+.epoch-block {
+	display:        flex;
+	flex-direction: column;
+	gap:            10px;
+}
+
 .epoch-checkbox {
 	display:        flex;
 	flex-direction: row;
+	align-items:    center;
 	font-size:      1.2rem;
 	gap:            10px;
 }
 
 .epoch-checkbox-checkbox {
 	height: 20px;
+	align-items:    center;
 	width:  20px;
+	/*TODO refaire un allignement propre*/
+	margin-top: 6px;
 }
 
 .epoch-label {
@@ -164,4 +202,21 @@ body, html {
 .epoch-selector {
 	margin-top: 10px;
 	width:      100%;
+}
+
+.params-collapse-block {
+	display: none;
+	margin: 5px auto;
+}
+
+.params-collapse-text {
+	font-size: 1.2rem;
+	text-align: center;
+	width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+	.params-collapse-block {
+		display: flex;
+	}
 }
