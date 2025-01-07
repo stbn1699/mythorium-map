@@ -65,7 +65,14 @@ const getMarkerIcon = (marker: string) => {
 
 let map: LeafletMap | null = null; // Variable pour stocker l'instance de la carte
 
-const Map: React.FC = () => {
+interface MapProps {
+    mapName: string;
+    maxZoom: number;
+    minEpoch: number;
+    maxEpoch: number;
+}
+
+const Map: React.FC<MapProps> = ({ mapName, maxZoom, minEpoch, maxEpoch }) => {
 	const [locations, setLocations] = useState<Location[]>([]);
 	const [currentEpoch, setCurrentEpoch] = useState<number>(2500); // Époque actuelle (2500 par défaut)
 	const [markersLayer, setMarkersLayer] = useState<L.LayerGroup | null>(null); // Groupe de couches pour les marqueurs
@@ -91,7 +98,7 @@ const Map: React.FC = () => {
 			if (!isNaN(id)) {
 				const location = locations.find(loc => loc.id === id);
 				if (location) {
-					map?.flyTo([location.x - 1000, location.y], 3, {
+					map?.flyTo([location.x, location.y], 3, {
 						animate: true, duration: 0.5,
 					});
 					showLocationDetails(location);
@@ -122,12 +129,12 @@ const Map: React.FC = () => {
 			const center: L.LatLngExpression = [-500, 500];
 
 			map = L.map('map', {
-				crs: L.CRS.Simple, minZoom: 0, maxZoom: 3, zoomControl: false, // Disable zoom buttons
+				crs: L.CRS.Simple, minZoom: 0, maxZoom: maxZoom, zoomControl: false, // Disable zoom buttons
 			});
 
 			// Add tiles
-			L.tileLayer('/worldMap/tiles/{z}/{x}/{y}.png', {
-				tileSize: 128, minZoom: 0, maxZoom: 3, noWrap: true, bounds: bounds,
+			L.tileLayer(`/${mapName}/tiles/{z}/{x}/{y}.png`, {
+				tileSize: 128, minZoom: 0, maxZoom: maxZoom, noWrap: true, bounds: bounds,
 			}).addTo(map);
 
 			// Restrict the view within the bounds
@@ -226,7 +233,7 @@ const Map: React.FC = () => {
 
 	const handleEpochInputChange = (value: string) => {
 		const epoch = parseInt(value, 10);
-		if (!isNaN(epoch) && epoch >= 0 && epoch <= 5000) {
+		if (!isNaN(epoch) && epoch >= minEpoch && epoch <= maxEpoch) {
 			setCurrentEpoch(epoch);
 		}
 	};
@@ -255,16 +262,16 @@ const Map: React.FC = () => {
 						</label>
 						{isFilterEnabled && (<>
 							<label htmlFor="epoch-selector" className="epoch-label">
-								<div className="epoch-label-text">Époque actuelle :{' '}</div>
-								<input id="epoch-input" type="number" min="0" max="5000"
-									   value={currentEpoch === 0 ? '' : currentEpoch}
+								<div className="epoch-label-text">Époque actuelle : </div>
+								<input id="epoch-input" type="number" min={minEpoch} max={maxEpoch}
+									   value={currentEpoch}
 									   onChange={(e) => handleEpochInputChange(e.target.value)}
 									   onFocus={(e) => e.target.value = ''}
 									   title={`Époque actuelle : ${currentEpoch}`}
 									   className="epoch-input"
 								/>
 							</label>
-							<input id="epoch-selector" type="range" min="0" max="5000" value={currentEpoch}
+							<input id="epoch-selector" type="range" min={minEpoch} max={maxEpoch} value={currentEpoch}
 								   onChange={(e) => setCurrentEpoch(parseInt(e.target.value, 10))}
 								   className="epoch-selector"
 							/>
