@@ -15,7 +15,7 @@
 - [x] ajouter des infos sur les points (description, lien vers le wiki, etc)
 - [x] déployer sur le serveur
 - [x] résoudre le soucis des points mal placés
-- [ ] responsive
+- [x] responsive
 - [ ] faire une légende
 - [ ] faire un filtre pour afficher qu'un seul type de point
 - [ ] gérer les zooms avec une carte plus résolutionnée
